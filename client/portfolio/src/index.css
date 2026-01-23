@@ -1,0 +1,415 @@
+/* Import Google Fonts - Inter */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ========================================
+   CSS CUSTOM PROPERTIES
+   ======================================== */
+:root {
+  /* Primary Colors */
+  --primary-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
+  --secondary-gradient: linear-gradient(135deg, #06b6d4 0%, #3b82f6 50%, #8b5cf6 100%);
+  --dark-gradient: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #1e3a5f 100%);
+  
+  /* Glass Effect Colors */
+  --glass-bg-light: rgba(255, 255, 255, 0.25);
+  --glass-bg-dark: rgba(17, 24, 39, 0.75);
+  --glass-border-light: rgba(255, 255, 255, 0.18);
+  --glass-border-dark: rgba(255, 255, 255, 0.08);
+  
+  /* Glow Colors */
+  --glow-primary: rgba(99, 102, 241, 0.5);
+  --glow-purple: rgba(168, 85, 247, 0.5);
+  --glow-pink: rgba(236, 72, 153, 0.5);
+  
+  /* Font */
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  line-height: 1.6;
+  font-weight: 400;
+  
+  /* Color Scheme */
+  color-scheme: light dark;
+  
+  /* Font Rendering */
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ========================================
+   BASE STYLES
+   ======================================== */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background-color: #f8fafc;
+  color: #1e293b;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dark body,
+body.dark {
+  background-color: #0f172a;
+  color: #e2e8f0;
+}
+
+/* ========================================
+   TYPOGRAPHY
+   ======================================== */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+a {
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+/* ========================================
+   GLASSMORPHISM UTILITIES
+   ======================================== */
+@layer utilities {
+  .glass {
+    background: var(--glass-bg-light);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border-light);
+  }
+  
+  .dark .glass {
+    background: var(--glass-bg-dark);
+    border-color: var(--glass-border-dark);
+  }
+  
+  .glass-card {
+    @apply rounded-2xl shadow-glass;
+    background: var(--glass-bg-light);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border-light);
+  }
+  
+  .dark .glass-card {
+    background: var(--glass-bg-dark);
+    border-color: var(--glass-border-dark);
+  }
+}
+
+/* ========================================
+   GRADIENT TEXT UTILITIES
+   ======================================== */
+@layer utilities {
+  .gradient-text {
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .gradient-text-secondary {
+    background: var(--secondary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .gradient-text-animated {
+    background: linear-gradient(
+      90deg,
+      #6366f1 0%,
+      #a855f7 25%,
+      #ec4899 50%,
+      #a855f7 75%,
+      #6366f1 100%
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradient 3s linear infinite;
+  }
+}
+
+/* ========================================
+   BUTTON STYLES
+   ======================================== */
+@layer components {
+  .btn-primary {
+    @apply px-6 py-3 rounded-xl font-semibold text-white shadow-lg;
+    @apply transition-all duration-300 ease-out;
+    @apply hover:shadow-glow-md hover:-translate-y-1;
+    @apply active:scale-95;
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  }
+  
+  .btn-primary:hover {
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+  }
+  
+  .btn-outline {
+    @apply px-6 py-3 rounded-xl font-semibold;
+    @apply border-2 border-indigo-500 text-indigo-600;
+    @apply transition-all duration-300 ease-out;
+    @apply hover:bg-indigo-500 hover:text-white hover:-translate-y-1;
+    @apply active:scale-95;
+  }
+  
+  .dark .btn-outline {
+    @apply border-indigo-400 text-indigo-400;
+    @apply hover:bg-indigo-500 hover:text-white;
+  }
+  
+  .btn-ghost {
+    @apply px-4 py-2 rounded-lg font-medium;
+    @apply text-gray-700 dark:text-gray-300;
+    @apply transition-all duration-300 ease-out;
+    @apply hover:bg-gray-100 dark:hover:bg-gray-800;
+  }
+  
+  .btn-glow {
+    @apply relative overflow-hidden;
+  }
+  
+  .btn-glow::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    background: var(--primary-gradient);
+    border-radius: inherit;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  .btn-glow:hover::before {
+    opacity: 1;
+    filter: blur(8px);
+  }
+}
+
+/* ========================================
+   ANIMATED BORDER
+   ======================================== */
+@layer utilities {
+  .gradient-border {
+    position: relative;
+    background: transparent;
+  }
+  
+  .gradient-border::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    padding: 2px;
+    border-radius: inherit;
+    background: var(--primary-gradient);
+    -webkit-mask: 
+      linear-gradient(#fff 0 0) content-box, 
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+  }
+  
+  .animated-border::before {
+    background: linear-gradient(
+      90deg,
+      #6366f1,
+      #a855f7,
+      #ec4899,
+      #a855f7,
+      #6366f1
+    );
+    background-size: 300% 100%;
+    animation: gradient 4s linear infinite;
+  }
+}
+
+/* ========================================
+   HOVER EFFECTS
+   ======================================== */
+@layer utilities {
+  .hover-lift {
+    @apply transition-all duration-300 ease-out;
+    @apply hover:-translate-y-2 hover:shadow-xl;
+  }
+  
+  .hover-glow {
+    @apply transition-all duration-300;
+  }
+  
+  .hover-glow:hover {
+    box-shadow: 0 0 20px var(--glow-primary);
+  }
+  
+  .hover-scale {
+    @apply transition-transform duration-300 ease-out;
+    @apply hover:scale-105;
+  }
+}
+
+/* ========================================
+   CARD STYLES
+   ======================================== */
+@layer components {
+  .card {
+    @apply rounded-2xl p-6;
+    @apply bg-white dark:bg-gray-900;
+    @apply border border-gray-200 dark:border-gray-700;
+    @apply shadow-lg;
+    @apply transition-all duration-300;
+  }
+  
+  .card-hover {
+    @apply hover:shadow-2xl hover:-translate-y-1;
+  }
+  
+  .card-gradient {
+    @apply relative overflow-hidden;
+  }
+  
+  .card-gradient::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    padding: 1px;
+    border-radius: inherit;
+    background: var(--primary-gradient);
+    -webkit-mask: 
+      linear-gradient(#fff 0 0) content-box, 
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  .card-gradient:hover::before {
+    opacity: 1;
+  }
+}
+
+/* ========================================
+   SECTION HEADING
+   ======================================== */
+@layer components {
+  .section-heading {
+    @apply text-3xl md:text-4xl font-bold mb-12;
+    @apply text-gray-900 dark:text-white;
+    @apply relative inline-block;
+  }
+  
+  .section-heading::after {
+    content: '';
+    @apply absolute left-0 -bottom-2 w-16 h-1;
+    @apply bg-gradient-to-r from-indigo-600 to-purple-600;
+    @apply rounded-full;
+  }
+}
+
+/* ========================================
+   INPUT STYLES
+   ======================================== */
+@layer components {
+  .input-modern {
+    @apply w-full px-4 py-3;
+    @apply bg-white dark:bg-gray-900;
+    @apply border border-gray-300 dark:border-gray-700;
+    @apply rounded-xl outline-none;
+    @apply text-gray-900 dark:text-gray-100;
+    @apply transition-all duration-300;
+    @apply focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20;
+  }
+}
+
+/* ========================================
+   SHIMMER EFFECT
+   ======================================== */
+@layer utilities {
+  .shimmer {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .shimmer::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.2) 50%,
+      transparent 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+  }
+}
+
+/* ========================================
+   CUSTOM SCROLLBAR
+   ======================================== */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 4px;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: #1e293b;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #4f46e5 0%, #9333ea 100%);
+}
+
+/* ========================================
+   SELECTION STYLES
+   ======================================== */
+::selection {
+  background: rgba(99, 102, 241, 0.3);
+  color: inherit;
+}
+
+/* ========================================
+   UTILITY ANIMATIONS
+   ======================================== */
+@keyframes gradient {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* Wave animation for footer */
+@keyframes wave {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+.animate-wave {
+  animation: wave 2s ease-in-out infinite;
+}
+
+/* Cursor blink for typewriter */
+.cursor-blink::after {
+  content: '|';
+  animation: blink 1s step-end infinite;
+}

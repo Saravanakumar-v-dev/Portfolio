@@ -1,0 +1,367 @@
+/* ==========================================================================
+   TAILWIND IMPORTS
+   ========================================================================== */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ==========================================================================
+   ROOT VARIABLES
+   ========================================================================== */
+:root {
+  --radius: 0.65rem;
+  --transition-fast: 180ms ease;
+  --transition-slow: 380ms ease;
+
+  --shadow-soft: 0 2px 8px rgba(0,0,0,0.08);
+  --shadow-card: 0 4px 14px rgba(0,0,0,0.12);
+  --shadow-strong: 0 6px 28px rgba(0,0,0,0.18);
+}
+
+/* Dark Mode Variables */
+.dark {
+  --shadow-card: 0 4px 14px rgba(0,0,0,0.35);
+  --shadow-strong: 0 6px 28px rgba(0,0,0,0.45);
+}
+
+/* ==========================================================================
+   GLOBAL RESET
+   ========================================================================== */
+html,
+body,
+#root {
+  padding: 0;
+  margin: 0;
+  min-height: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100;
+  font-family: 'Inter', sans-serif;
+}
+
+/* ==========================================================================
+   SCROLLBAR STYLING
+   ========================================================================== */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0,0,0,0.05);
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: rgba(255,255,255,0.05);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #999;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #666;
+}
+
+/* ==========================================================================
+   SECTION HEADINGS
+   ========================================================================== */
+section h2 {
+  @apply text-2xl md:text-3xl font-semibold tracking-tight mb-6;
+}
+
+/* ==========================================================================
+   LINK STYLING
+   ========================================================================== */
+a {
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  @apply text-indigo-600 dark:text-indigo-400;
+}
+
+/* ==========================================================================
+   CARD BASE STYLING
+   ========================================================================== */
+.card {
+  background: white;
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  box-shadow: var(--shadow-card);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.dark .card {
+  background: #1f2937;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-strong);
+}
+
+/* ==========================================================================
+   HERO SECTION CUSTOM STYLING
+   ========================================================================== */
+.hero-img {
+  border-radius: 50%;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.22);
+  transition: transform var(--transition-slow);
+}
+
+.hero-img:hover {
+  transform: scale(1.04) rotate(1.8deg);
+}
+
+/* ==========================================================================
+   NAVBAR CUSTOM STYLES
+   ========================================================================== */
+.nav-link {
+  @apply relative font-medium;
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 0%;
+  height: 2px;
+  background: currentColor;
+  transition: width var(--transition-fast);
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+/* ==========================================================================
+   BUTTONS
+   ========================================================================== */
+.btn-primary {
+  @apply px-5 py-3 bg-indigo-600 text-white rounded-md;
+  transition: background var(--transition-fast), transform var(--transition-fast);
+}
+
+.btn-primary:hover {
+  @apply bg-indigo-700;
+  transform: translateY(-2px);
+}
+
+.btn-outline {
+  @apply px-5 py-3 border rounded-md;
+  transition: background var(--transition-fast), transform var(--transition-fast);
+}
+
+.btn-outline:hover {
+  @apply bg-gray-100 dark:bg-gray-800;
+  transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   SKILLS BAR CUSTOM ANIMATIONS
+   ========================================================================== */
+.skill-bar {
+  height: 8px;
+  border-radius: 4px;
+  background: #e5e7eb;
+  overflow: hidden;
+}
+
+.dark .skill-bar {
+  background: #374151;
+}
+
+.skill-fill {
+  height: 100%;
+  background: #6366f1;
+  width: 0;
+  animation: fillBar 1.2s forwards ease-out;
+}
+
+@keyframes fillBar {
+  from {
+    width: 0;
+  }
+  to {
+    width: 80%;
+  }
+}
+
+/* ==========================================================================
+   PROJECT CARD
+   ========================================================================== */
+.project-card {
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  cursor: pointer;
+  background: white;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.project-card:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: var(--shadow-strong);
+}
+
+.dark .project-card {
+  background: #1f2937;
+}
+
+/* ==========================================================================
+   MODAL STYLING
+   ========================================================================== */
+.modal-overlay {
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(4px);
+}
+
+.modal-content {
+  background: white;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-strong);
+  padding: 1.5rem;
+}
+
+
+.dark .modal-content {
+  background: #111827;
+}
+
+/* ==========================================================================
+   CAROUSEL
+   ========================================================================== */
+.carousel-img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: var(--radius);
+}
+
+.carousel-btn {
+  @apply px-3 py-1 rounded border;
+  transition: background var(--transition-fast);
+}
+
+.carousel-btn:hover {
+  @apply bg-gray-200 dark:bg-gray-700;
+}
+
+/* ==========================================================================
+   CONTACT FORM
+   ========================================================================== */
+.contact-input {
+  @apply p-3 rounded border bg-white dark:bg-gray-800;
+  transition: border var(--transition-fast);
+}
+
+.contact-input:focus {
+  @apply border-indigo-500 outline-none;
+}
+
+/* ==========================================================================
+   FOOTER
+   ========================================================================== */
+footer {
+  @apply text-center text-sm text-gray-500 dark:text-gray-400;
+}
+
+/* ==========================================================================
+   REDUCE MOTION SUPPORT
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+html {
+  scroll-behavior: smooth;
+}
+body {
+  font-family: 'Poppins', 'Inter', sans-serif;
+}
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+.animate-float-delay {
+  animation: float 4s ease-in-out infinite 1s;
+}
+
+/* Slow spin */
+@keyframes slow-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.animate-slow-spin {
+  animation: slow-spin 25s linear infinite;
+}
+
+/* Glow pulse */
+@keyframes pulse-slow {
+  0% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.1); }
+  100% { opacity: 0.4; transform: scale(1); }
+}
+.animate-pulse-slow {
+  animation: pulse-slow 6s ease-in-out infinite;
+}
+
+/* Floating particle animations */
+@keyframes particle {
+  0% { transform: translateY(0) translateX(0); opacity: 1; }
+  50% { transform: translateY(-20px) translateX(10px); opacity: 0.5; }
+  100% { transform: translateY(0) translateX(0); opacity: 1; }
+}
+.animate-particle {
+  animation: particle 5s ease-in-out infinite;
+}
+
+@keyframes particle2 {
+  0% { transform: translateY(0); opacity: .7; }
+  50% { transform: translateY(14px); opacity: .4; }
+  100% { transform: translateY(0); opacity: .7; }
+}
+.animate-particle2 {
+  animation: particle2 7s ease-in-out infinite;
+}
+
+@keyframes particle3 {
+  0% { transform: translate(0, 0); opacity: 1; }
+  50% { transform: translate(-15px, -20px); opacity: .5; }
+  100% { transform: translate(0, 0); opacity: 1; }
+}
+.animate-particle3 {
+  animation: particle3 8s ease-in-out infinite;
+}
+.hover-glow:hover {
+  box-shadow: 0 0 25px rgba(120, 0, 255, 0.6);
+}
+/* Smooth Theme Transition */
+html, body, .dark {
+  transition: background-color 1s ease, color 1s ease;
+}
+.theme-glow {
+  animation: glowPulse 0.6s ease;
+}
+
+@keyframes glowPulse {
+  0% { box-shadow: 0 0 0px rgba(255,255,255,0); }
+  50% { box-shadow: 0 0 20px rgba(138,43,226,0.7); }
+  100% { box-shadow: 0 0 0px rgba(255,255,255,0); }
+}
+
+
+
+
