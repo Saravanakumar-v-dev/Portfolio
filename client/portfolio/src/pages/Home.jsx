@@ -73,15 +73,32 @@ export default function Home() {
               groups={[
                 {
                   title: "Frontend",
-                  skills: [{ name: "HTML" }, { name: "CSS" }, { name: "JavaScript" }, { name: "React" }, { name: "Tailwind" }],
+                  skills: [
+                    { name: "HTML", level: 92 },
+                    { name: "CSS", level: 90 },
+                    { name: "JavaScript", level: 88 },
+                    { name: "React", level: 89 },
+                    { name: "Tailwind", level: 91 },
+                  ],
                 },
                 {
                   title: "Backend",
-                  skills: [{ name: "Node.js" }, { name: "Express" }, { name: "MongoDB" }],
+                  skills: [
+                    { name: "Node.js", level: 79 },
+                    { name: "Express", level: 76 },
+                    { name: "MongoDB", level: 80 },
+                  ],
                 },
                 {
                   title: "Tools & Languages",
-                  skills: [{ name: "Git" }, { name: "Vite" }, { name: "Postman" }, { name: "VSCode" }, { name: "Python" }, { name: "Java" }],
+                  skills: [
+                    { name: "Git", level: 84 },
+                    { name: "Vite", level: 82 },
+                    { name: "Postman", level: 78 },
+                    { name: "VSCode", level: 90 },
+                    { name: "Python", level: 74 },
+                    { name: "Java", level: 72 },
+                  ],
                 },
               ]}
             />

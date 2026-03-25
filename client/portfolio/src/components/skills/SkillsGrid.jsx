@@ -76,12 +76,13 @@ export default function SkillsGrid({ groups }) {
             {group.skills.map((skill) => {
               const skillMeta = iconMap[skill.name];
               const Icon = skillMeta?.icon;
+              const level = skill.level ?? proficiencyByGroup[group.title];
 
               return (
                 <motion.div
                   key={skill.name}
                   whileHover={{ y: -4, scale: 1.02 }}
-                  className="flex min-w-0 items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-3 py-3 sm:px-4"
+                  className="flex min-w-0 items-start gap-3 rounded-2xl border border-white/10 bg-white/5 px-3 py-3 sm:px-4"
                 >
                   <div
                     className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl"
@@ -89,9 +90,21 @@ export default function SkillsGrid({ groups }) {
                   >
                     {Icon ? <Icon style={{ color: skillMeta.color }} /> : null}
                   </div>
-                  <div className="min-w-0">
-                    <p className="truncate text-sm font-medium text-theme-primary">{skill.name}</p>
-                    <p className="text-xs text-theme-muted">Production ready</p>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center justify-between gap-2">
+                      <p className="truncate text-sm font-medium text-theme-primary">{skill.name}</p>
+                      <span className="shrink-0 text-[11px] font-medium text-theme-muted">{level}%</span>
+                    </div>
+                    <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-white/10">
+                      <motion.div
+                        initial={{ width: 0 }}
+                        whileInView={{ width: `${level}%` }}
+                        viewport={{ once: true, margin: "-120px" }}
+                        transition={{ duration: 0.6, delay: index * 0.06 }}
+                        className="h-full rounded-full bg-gradient-to-r from-blue-400 via-cyan-300 to-emerald-300"
+                      />
+                    </div>
+                    <p className="mt-2 text-xs text-theme-muted">Production ready</p>
                   </div>
                 </motion.div>
               );

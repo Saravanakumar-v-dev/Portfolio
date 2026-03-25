@@ -119,7 +119,7 @@ export default function ProjectList({ projects = [] }) {
         </div>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-3">
+      <div className="grid gap-5 md:gap-6 lg:grid-cols-3">
         {filteredProjects.map((project, index) => (
           <motion.article
             key={project.id}
@@ -138,13 +138,13 @@ export default function ProjectList({ projects = [] }) {
                 className="h-56 w-full object-cover transition duration-700 group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent" />
-              <div className="absolute left-5 top-5 chip bg-slate-950/55">{project.categoryLabel ?? project.category}</div>
+              <div className="absolute left-3 top-3 chip bg-slate-950/55 sm:left-5 sm:top-5">{project.categoryLabel ?? project.category}</div>
             </div>
 
-            <div className="flex flex-1 flex-col p-6">
+            <div className="flex flex-1 flex-col p-4 sm:p-6">
               <div>
-                <h3 className="text-2xl font-semibold text-theme-primary">{project.title}</h3>
-                <p className="mt-3 text-sm leading-7 text-theme-muted">{project.description}</p>
+                <h3 className="text-xl font-semibold leading-tight text-theme-primary sm:text-2xl">{project.title}</h3>
+                <p className="mt-3 text-sm leading-6 text-theme-muted sm:leading-7">{project.description}</p>
               </div>
 
               <div className="mt-5 flex flex-wrap gap-2">
@@ -257,7 +257,7 @@ export default function ProjectList({ projects = [] }) {
 
               <div className="max-h-[calc(88vh-12rem)] overflow-y-auto p-5 sm:max-h-[calc(88vh-18rem)] sm:p-8">
                 <p className="text-sm font-medium uppercase tracking-[0.24em] text-cyan-300/80">Project spotlight</p>
-                <h3 id="project-dialog-title" className="mt-4 text-2xl font-semibold text-theme-primary sm:text-3xl">
+                <h3 id="project-dialog-title" className="mt-4 pr-10 text-2xl font-semibold leading-tight text-theme-primary sm:text-3xl">
                   {selectedProject.title}
                 </h3>
                 <p className="mt-4 text-sm leading-7 text-theme-secondary sm:text-base sm:leading-8">{selectedProject.description}</p>

@@ -103,7 +103,7 @@ export default function ContactForm() {
         </p>
       </motion.div>
 
-      <div className="mt-10 grid gap-5 lg:mt-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-6">
+      <div className="mt-10 grid gap-5 xl:mt-12 xl:grid-cols-[0.9fr_1.1fr] xl:gap-6">
         <motion.div
           initial={{ opacity: 0, x: -24 }}
           whileInView={{ opacity: 1, x: 0 }}
@@ -117,13 +117,13 @@ export default function ContactForm() {
               const Icon = item.icon;
 
               const content = (
-                <div className="flex items-center gap-4 rounded-[24px] border border-white/10 bg-white/5 px-4 py-4 transition hover:bg-white/10">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-cyan-400/10 text-cyan-300">
+                <div className="flex items-start gap-3 rounded-[22px] border border-white/10 bg-white/5 px-3 py-3.5 transition hover:bg-white/10 sm:gap-4 sm:rounded-[24px] sm:px-4 sm:py-4">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-cyan-400/10 text-cyan-300 sm:h-12 sm:w-12">
                     <Icon />
                   </div>
-                  <div>
+                  <div className="min-w-0">
                     <p className="text-sm text-theme-muted">{item.label}</p>
-                    <p className="mt-1 font-medium text-theme-primary">{item.value}</p>
+                    <p className="mt-1 break-words text-sm font-medium text-theme-primary sm:text-base">{item.value}</p>
                   </div>
                 </div>
               );
@@ -140,7 +140,7 @@ export default function ContactForm() {
             })}
           </div>
 
-          <div className="mt-8 rounded-[28px] border border-white/10 bg-white/5 p-5">
+          <div className="mt-8 rounded-[24px] border border-white/10 bg-white/5 p-4 sm:rounded-[28px] sm:p-5">
             <p className="text-sm font-medium uppercase tracking-[0.24em] text-cyan-300/80">Working style</p>
             <p className="mt-4 text-sm leading-7 text-theme-secondary">
               I enjoy projects where design quality, responsiveness, and user trust matter as much
@@ -148,7 +148,7 @@ export default function ContactForm() {
             </p>
           </div>
 
-          <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <div className="mt-8 grid grid-cols-1 gap-3 md:grid-cols-2">
             {socialLinks.map((item) => {
               const Icon = item.icon;
 
@@ -177,7 +177,7 @@ export default function ContactForm() {
           className="card-panel space-y-5 px-4 py-5 sm:p-6 md:p-7"
           noValidate
         >
-          <div className="grid gap-4 sm:gap-5 md:grid-cols-2">
+          <div className="grid gap-4 sm:gap-5 lg:grid-cols-2 xl:grid-cols-2">
             <label className="block">
               <span className="mb-2 block text-sm font-medium text-theme-secondary">Full name</span>
               <input
@@ -213,14 +213,14 @@ export default function ContactForm() {
               name="message"
               value={formData.message}
               onChange={handleChange}
-              className="input-shell min-h-[11rem] resize-y"
+              className="input-shell min-h-[10rem] resize-y sm:min-h-[11rem]"
               placeholder="Tell me about the role, project scope, timeline, or what you want to build."
               required
             />
           </label>
 
           <div className="flex flex-col gap-4">
-            <div className="text-sm leading-6 text-theme-muted">
+            <div className="max-w-xl text-sm leading-6 text-theme-muted">
               Typical response topics: frontend roles, portfolio redesigns, MERN builds, and collaboration.
             </div>
             <button
