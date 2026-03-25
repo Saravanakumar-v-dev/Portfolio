@@ -177,6 +177,10 @@ export default function Hero() {
                 alt="Portrait of Saravanakumar"
                 className="h-[25rem] w-full object-cover object-top"
                 loading="eager"
+                fetchPriority="high"
+                decoding="async"
+                width="464"
+                height="400"
               />
             </div>
 

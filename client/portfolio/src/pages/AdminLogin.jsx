@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 export default function AdminLogin() {
@@ -26,6 +27,7 @@ export default function AdminLogin() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">
+      <Toaster position="top-right" reverseOrder={false} />
       <form onSubmit={handleLogin} className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-xl w-96">
         <h2 className="text-2xl font-bold mb-6 text-center">Admin Login</h2>
 

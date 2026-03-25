@@ -1,15 +1,17 @@
-import React from "react";
+import React, { Suspense, lazy } from "react";
 import { motion } from "framer-motion";
-import AboutSection from "../components/about/AboutSection";
-import Footer from "../components/common/Footer";
 import Navbar from "../components/common/Navbar";
-import ContactForm from "../components/contact/ContactForm";
+import DeferredSection from "../components/common/DeferredSection";
 import Hero from "../components/home/Hero";
-import ProjectList from "../components/projects/ProjectList";
-import SkillsGrid from "../components/skills/SkillsGrid";
 import { projects as projectData } from "../data/sampleProjects";
 import useScrollToTop from "../hooks/useScrollToTop";
-import ServicesSection from "../services/ServicesSection";
+
+const AboutSection = lazy(() => import("../components/about/AboutSection"));
+const Footer = lazy(() => import("../components/common/Footer"));
+const ContactForm = lazy(() => import("../components/contact/ContactForm"));
+const ProjectList = lazy(() => import("../components/projects/ProjectList"));
+const SkillsGrid = lazy(() => import("../components/skills/SkillsGrid"));
+const ServicesSection = lazy(() => import("../services/ServicesSection"));
 
 const stackMarquee = [
   "React",
@@ -21,6 +23,10 @@ const stackMarquee = [
   "Portfolio Design",
   "API Integration",
 ];
+
+function SectionPlaceholder({ height = 220 }) {
+  return <div className="w-full rounded-[28px] bg-white/5" style={{ minHeight: height }} />;
+}
 
 export default function Home() {
   useScrollToTop();
@@ -51,7 +57,11 @@ export default function Home() {
           </div>
         </motion.section>
 
-        <AboutSection />
+        <DeferredSection minHeight={420}>
+          <Suspense fallback={<SectionPlaceholder height={420} />}>
+            <AboutSection />
+          </Suspense>
+        </DeferredSection>
 
         <section id="skills" className="section-shell section-block">
           <motion.div
@@ -68,41 +78,43 @@ export default function Home() {
             </p>
           </motion.div>
 
-          <div className="mt-12">
-            <SkillsGrid
-              groups={[
-                {
-                  title: "Frontend",
-                  skills: [
-                    { name: "HTML", level: 92 },
-                    { name: "CSS", level: 90 },
-                    { name: "JavaScript", level: 88 },
-                    { name: "React", level: 89 },
-                    { name: "Tailwind", level: 91 },
-                  ],
-                },
-                {
-                  title: "Backend",
-                  skills: [
-                    { name: "Node.js", level: 79 },
-                    { name: "Express", level: 76 },
-                    { name: "MongoDB", level: 80 },
-                  ],
-                },
-                {
-                  title: "Tools & Languages",
-                  skills: [
-                    { name: "Git", level: 84 },
-                    { name: "Vite", level: 82 },
-                    { name: "Postman", level: 78 },
-                    { name: "VSCode", level: 90 },
-                    { name: "Python", level: 74 },
-                    { name: "Java", level: 72 },
-                  ],
-                },
-              ]}
-            />
-          </div>
+          <DeferredSection minHeight={440} className="mt-12">
+            <Suspense fallback={<SectionPlaceholder height={440} />}>
+              <SkillsGrid
+                groups={[
+                  {
+                    title: "Frontend",
+                    skills: [
+                      { name: "HTML", level: 92 },
+                      { name: "CSS", level: 90 },
+                      { name: "JavaScript", level: 88 },
+                      { name: "React", level: 89 },
+                      { name: "Tailwind", level: 91 },
+                    ],
+                  },
+                  {
+                    title: "Backend",
+                    skills: [
+                      { name: "Node.js", level: 79 },
+                      { name: "Express", level: 76 },
+                      { name: "MongoDB", level: 80 },
+                    ],
+                  },
+                  {
+                    title: "Tools & Languages",
+                    skills: [
+                      { name: "Git", level: 84 },
+                      { name: "Vite", level: 82 },
+                      { name: "Postman", level: 78 },
+                      { name: "VSCode", level: 90 },
+                      { name: "Python", level: 74 },
+                      { name: "Java", level: 72 },
+                    ],
+                  },
+                ]}
+              />
+            </Suspense>
+          </DeferredSection>
         </section>
 
         <section id="projects" className="section-shell section-block">
@@ -120,17 +132,31 @@ export default function Home() {
             </p>
           </motion.div>
 
-          <div className="mt-12">
-            <ProjectList projects={projectData} />
-          </div>
+          <DeferredSection minHeight={560} className="mt-12">
+            <Suspense fallback={<SectionPlaceholder height={560} />}>
+              <ProjectList projects={projectData} />
+            </Suspense>
+          </DeferredSection>
         </section>
 
-        <ServicesSection />
+        <DeferredSection minHeight={360}>
+          <Suspense fallback={<SectionPlaceholder height={360} />}>
+            <ServicesSection />
+          </Suspense>
+        </DeferredSection>
 
-        <ContactForm />
+        <DeferredSection minHeight={420}>
+          <Suspense fallback={<SectionPlaceholder height={420} />}>
+            <ContactForm />
+          </Suspense>
+        </DeferredSection>
       </main>
 
-      <Footer />
+      <DeferredSection minHeight={220}>
+        <Suspense fallback={<SectionPlaceholder height={220} />}>
+          <Footer />
+        </Suspense>
+      </DeferredSection>
     </>
   );
 }
