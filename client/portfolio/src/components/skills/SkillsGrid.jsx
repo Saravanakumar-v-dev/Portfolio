@@ -63,10 +63,9 @@ export default function SkillsGrid({ groups }) {
             </div>
             <div className="h-2.5 w-full overflow-hidden rounded-full bg-white/10">
             <motion.div
-              initial={{ width: 0 }}
-              whileInView={{ width: `${proficiencyByGroup[group.title]}%` }}
-              viewport={{ once: true, margin: "-120px" }}
-              transition={{ duration: 0.8, delay: index * 0.1 }}
+              initial={false}
+              animate={{ width: `${proficiencyByGroup[group.title]}%` }}
+              transition={{ duration: 0.5, delay: index * 0.08 }}
               className="h-full min-w-[3.5rem] rounded-full bg-gradient-to-r from-blue-400 via-cyan-300 to-emerald-300"
             />
             </div>
@@ -97,10 +96,9 @@ export default function SkillsGrid({ groups }) {
                     </div>
                     <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-white/10">
                       <motion.div
-                        initial={{ width: 0 }}
-                        whileInView={{ width: `${level}%` }}
-                        viewport={{ once: true, margin: "-120px" }}
-                        transition={{ duration: 0.6, delay: index * 0.06 }}
+                        initial={false}
+                        animate={{ width: `${level}%` }}
+                        transition={{ duration: 0.45, delay: index * 0.04 }}
                         className="h-full rounded-full bg-gradient-to-r from-blue-400 via-cyan-300 to-emerald-300"
                       />
                     </div>
