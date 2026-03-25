@@ -1,249 +1,230 @@
-import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
-import { FaMoon, FaSun, FaBars, FaTimes } from "react-icons/fa";
+import React, { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { FaBars, FaMoon, FaSun, FaTimes } from "react-icons/fa";
+import useTheme from "../../hooks/useTheme";
+
+const navItems = [
+  { label: "Home", id: "hero" },
+  { label: "About", id: "about" },
+  { label: "Skills", id: "skills" },
+  { label: "Projects", id: "projects" },
+  { label: "Journey", id: "experience" },
+  { label: "Contact", id: "contact" },
+];
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
-  const [darkMode, setDarkMode] = useState(
-    localStorage.getItem("theme") === "dark"
-  );
-  const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("hero");
+  const [scrolled, setScrolled] = useState(false);
+  const { isDark, toggleTheme } = useTheme();
 
-  const { scrollY } = useScroll();
-
-  // Track scroll position for navbar styling
-  useMotionValueEvent(scrollY, "change", (latest) => {
-    setScrolled(latest > 50);
-  });
-
-  // Track active section
   useEffect(() => {
-    const sections = ["hero", "about", "services", "skills", "projects", "contact"];
-
     const handleScroll = () => {
-      const scrollPosition = window.scrollY + 100;
+      setScrolled(window.scrollY > 24);
+    };
 
-      for (const section of sections) {
-        const element = document.getElementById(section);
-        if (element) {
-          const { offsetTop, offsetHeight } = element;
-          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
-            setActiveSection(section);
-            break;
-          }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visibleEntry = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((entryA, entryB) => entryB.intersectionRatio - entryA.intersectionRatio)[0];
+
+        if (visibleEntry?.target?.id) {
+          setActiveSection(visibleEntry.target.id);
         }
+      },
+      {
+        rootMargin: "-35% 0px -45% 0px",
+        threshold: [0.2, 0.35, 0.6],
+      }
+    );
+
+    navItems.forEach(({ id }) => {
+      const element = document.getElementById(id);
+      if (element) {
+        observer.observe(element);
+      }
+    });
+
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      observer.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!open) {
+      return undefined;
+    }
+
+    const onKeyDown = (event) => {
+      if (event.key === "Escape") {
+        setOpen(false);
       }
     };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  useEffect(() => {
-    const savedTheme = localStorage.getItem("theme") || "light";
-    if (savedTheme === "dark") {
-      document.documentElement.classList.add("dark");
-      setDarkMode(true);
-    } else {
-      document.documentElement.classList.remove("dark");
-      setDarkMode(false);
-    }
-  }, []);
-
-  const toggleDarkMode = () => {
-    const newTheme = darkMode ? "light" : "dark";
-    document.documentElement.classList.toggle("dark");
-    localStorage.setItem("theme", newTheme);
-    setDarkMode(!darkMode);
-  };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [open]);
 
   const scrollToSection = (id) => {
-    document.getElementById(id)?.scrollIntoView({
-      behavior: "smooth",
-    });
+    setActiveSection(id);
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
     setOpen(false);
   };
 
-  const menuItems = [
-    { label: "Home", id: "hero" },
-    { label: "About", id: "about" },
-    { label: "Skills", id: "skills" },
-    { label: "Projects", id: "projects" },
-    { label: "Contact", id: "contact" },
-  ];
-
   return (
-    <motion.nav
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.5, ease: "easeOut" }}
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${scrolled
-          ? "py-3 backdrop-blur-xl bg-white/70 dark:bg-gray-900/70 shadow-lg border-b border-gray-200/50 dark:border-gray-700/50"
-          : "py-5 backdrop-blur-md bg-white/40 dark:bg-gray-900/40 border-b border-transparent"
-        }`}
+    <motion.header
+      initial={{ y: -32, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.45, ease: "easeOut" }}
+      className="fixed inset-x-0 top-0 z-50 px-4 pt-4 sm:px-6"
     >
-      <div className="container mx-auto px-6 flex justify-between items-center">
-        {/* BRAND */}
-        <motion.h1
-          whileHover={{ scale: 1.02 }}
-          className="text-xl md:text-2xl font-bold tracking-wide cursor-pointer"
-        >
-          <span className="gradient-text">Saravanakumar</span>
-          <span className="text-gray-700 dark:text-gray-300">.V</span>
-        </motion.h1>
-
-        {/* DESKTOP MENU */}
-        <div className="hidden lg:flex items-center gap-2">
-          {menuItems.map((item) => (
-            <motion.button
-              key={item.id}
-              onClick={() => scrollToSection(item.id)}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className={`relative px-4 py-2 rounded-lg font-medium transition-all duration-300 ${activeSection === item.id
-                  ? "text-indigo-600 dark:text-indigo-400"
-                  : "text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400"
-                }`}
-            >
-              {item.label}
-
-              {/* Active indicator */}
-              {activeSection === item.id && (
-                <motion.div
-                  layoutId="activeSection"
-                  className="absolute inset-0 bg-indigo-100 dark:bg-indigo-900/50 rounded-lg -z-10"
-                  transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                />
-              )}
-            </motion.button>
-          ))}
-
-          {/* DARK MODE TOGGLE */}
-          <motion.button
-            onClick={toggleDarkMode}
-            whileTap={{ rotate: 360, scale: 0.8 }}
-            whileHover={{ scale: 1.1 }}
-            transition={{ duration: 0.4 }}
-            className="ml-4 p-3 rounded-xl bg-gray-100 dark:bg-gray-800 text-2xl relative overflow-hidden"
+      <nav
+        className={`section-shell rounded-full border px-4 py-3 transition duration-300 sm:px-6 ${
+          scrolled ? "glass-panel shadow-[0_24px_80px_rgba(2,6,23,0.32)]" : "border-white/10 bg-white/5 backdrop-blur-md"
+        }`}
+        aria-label="Primary"
+      >
+        <div className="flex items-center justify-between gap-4">
+          <button
+            type="button"
+            onClick={() => scrollToSection("hero")}
+            className="flex items-center gap-3 text-left"
+            aria-label="Scroll to home section"
           >
-            <AnimatePresence mode="wait">
-              {darkMode ? (
-                <motion.div
-                  key="sun"
-                  initial={{ y: -30, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  exit={{ y: 30, opacity: 0 }}
-                  transition={{ duration: 0.2 }}
+            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-sm font-bold text-theme-primary">
+              SV
+            </span>
+            <span className="hidden sm:block">
+              <span className="block text-sm font-semibold text-theme-primary">Saravanakumar V</span>
+              <span className="block text-xs text-theme-muted">Frontend Engineer</span>
+            </span>
+          </button>
+
+          <div className="hidden items-center gap-2 lg:flex">
+            {navItems.map((item) => {
+              const isActive = activeSection === item.id;
+
+              return (
+                <button
+                  key={item.id}
+                  type="button"
+                  onClick={() => scrollToSection(item.id)}
+                  className={`relative rounded-full px-4 py-2 text-sm font-medium transition ${
+                    isActive ? "nav-pill-active" : "nav-pill hover:bg-white/8"
+                  }`}
+                  aria-current={isActive ? "page" : undefined}
                 >
-                  <FaSun className="text-yellow-400 drop-shadow-[0_0_10px_rgba(250,204,21,0.8)]" />
-                </motion.div>
-              ) : (
-                <motion.div
-                  key="moon"
-                  initial={{ y: -30, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  exit={{ y: 30, opacity: 0 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <FaMoon className="text-indigo-500 drop-shadow-[0_0_10px_rgba(99,102,241,0.8)]" />
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </motion.button>
+                  <motion.span
+                    layoutId="active-nav-pill"
+                    className={`absolute inset-0 rounded-full ${isActive ? "bg-white/10" : "bg-transparent"}`}
+                    transition={{ type: "spring", stiffness: 360, damping: 28 }}
+                  />
+                  <span className="relative z-10">{item.label}</span>
+                </button>
+              );
+            })}
+          </div>
+
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={toggleTheme}
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 text-theme-primary transition hover:bg-white/10"
+              aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+            >
+              {isDark ? <FaSun className="text-amber-300" /> : <FaMoon />}
+            </button>
+
+            <button
+              type="button"
+              onClick={() => scrollToSection("contact")}
+              className="hidden rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-slate-950 transition hover:-translate-y-0.5 hover:bg-cyan-100 lg:inline-flex"
+            >
+              Hire Me
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setOpen(true)}
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 text-theme-primary lg:hidden"
+              aria-label="Open navigation menu"
+            >
+              <FaBars />
+            </button>
+          </div>
         </div>
+      </nav>
 
-        {/* MOBILE MENU BUTTON */}
-        <motion.button
-          whileTap={{ scale: 0.9 }}
-          className="lg:hidden p-2 text-2xl text-gray-800 dark:text-gray-200"
-          onClick={() => setOpen(true)}
-        >
-          <FaBars />
-        </motion.button>
-      </div>
-
-      {/* MOBILE MENU OVERLAY */}
       <AnimatePresence>
         {open && (
           <>
-            {/* Backdrop */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-slate-950/70 backdrop-blur-sm"
               onClick={() => setOpen(false)}
-              className="fixed inset-0 bg-black/50 backdrop-blur-sm lg:hidden"
             />
 
-            {/* Menu Panel */}
             <motion.div
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
-              transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="fixed top-0 right-0 w-72 h-full bg-white dark:bg-gray-900 shadow-2xl p-8 flex flex-col z-50 lg:hidden"
+              transition={{ type: "spring", stiffness: 260, damping: 26 }}
+              className="fixed right-4 top-4 z-50 w-[min(88vw,22rem)] rounded-[32px] border border-white/10 bg-slate-950/95 p-6"
             >
-              {/* Close Button */}
-              <motion.button
-                whileTap={{ scale: 0.9 }}
-                onClick={() => setOpen(false)}
-                className="self-end p-2 text-3xl text-gray-800 dark:text-gray-200 hover:text-indigo-600 dark:hover:text-indigo-400 transition"
-              >
-                <FaTimes />
-              </motion.button>
+              <div className="mb-6 flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-semibold text-theme-primary">Navigation</p>
+                  <p className="text-sm text-theme-muted">Explore the portfolio</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setOpen(false)}
+                  className="flex h-10 w-10 items-center justify-center rounded-full bg-white/5 text-slate-200"
+                  aria-label="Close navigation menu"
+                >
+                  <FaTimes />
+                </button>
+              </div>
 
-              {/* Menu Items */}
-              <div className="flex flex-col gap-2 mt-8">
-                {menuItems.map((item, index) => (
+              <div className="space-y-2">
+                {navItems.map((item, index) => (
                   <motion.button
                     key={item.id}
-                    initial={{ opacity: 0, x: 50 }}
+                    type="button"
+                    initial={{ opacity: 0, x: 24 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.1 }}
+                    transition={{ delay: index * 0.06 }}
                     onClick={() => scrollToSection(item.id)}
-                    className={`text-left px-4 py-3 rounded-xl text-lg font-semibold transition-all ${activeSection === item.id
-                        ? "bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400"
-                        : "text-gray-900 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800"
-                      }`}
+                    className={`flex w-full items-center justify-between rounded-2xl px-4 py-3 text-left text-base font-medium transition ${
+                      activeSection === item.id
+                        ? "bg-white text-slate-950"
+                        : "bg-white/5 text-theme-primary hover:bg-white/10"
+                    }`}
                   >
-                    {item.label}
+                    <span>{item.label}</span>
+                    <span className="text-sm text-theme-muted">0{index + 1}</span>
                   </motion.button>
                 ))}
               </div>
 
-              {/* Mobile Dark Mode Toggle */}
-              <motion.button
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.4 }}
-                onClick={toggleDarkMode}
-                whileTap={{ scale: 0.9 }}
-                className="mt-8 flex items-center gap-3 px-4 py-3 rounded-xl bg-gray-100 dark:bg-gray-800 text-lg font-medium"
+              <button
+                type="button"
+                onClick={() => scrollToSection("contact")}
+                className="mt-6 flex w-full items-center justify-center rounded-2xl bg-gradient-to-r from-blue-500 to-cyan-400 px-4 py-3 font-semibold text-slate-950"
               >
-                {darkMode ? (
-                  <>
-                    <FaSun className="text-yellow-400 text-xl" />
-                    <span>Light Mode</span>
-                  </>
-                ) : (
-                  <>
-                    <FaMoon className="text-indigo-500 text-xl" />
-                    <span>Dark Mode</span>
-                  </>
-                )}
-              </motion.button>
-
-              {/* Footer */}
-              <div className="mt-auto pt-8 border-t border-gray-200 dark:border-gray-700">
-                <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
-                  © 2024 Saravanakumar
-                </p>
-              </div>
+                Start a Conversation
+              </button>
             </motion.div>
           </>
         )}
       </AnimatePresence>
-    </motion.nav>
+    </motion.header>
   );
 }

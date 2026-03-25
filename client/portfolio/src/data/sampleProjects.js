@@ -1,61 +1,42 @@
+import EdutrackImg from "../assets/Edutrack.png";
+import MultiImg from "../assets/Multi.png";
+import PortfolioImg from "../assets/Portfolio.png";
+
 export const projects = [
   {
     id: 1,
-    title: "EduTrack – Student Performance Management System",
+    title: "EduTrack - Student Performance Management System",
     category: "fullstack",
+    categoryLabel: "Full-Stack",
     description:
-      "A MERN-based analytics dashboard for tracking academics, attendance and student progress.",
+      "A MERN dashboard for tracking attendance, academic performance, and student insights through a clean analytics interface.",
     tech: ["React", "Node.js", "MongoDB", "Express"],
     github: "#",
-    demo: "#",
-    image: "https://i.imgur.com/2RZ3Mxj.jpeg"
+    demo: "https://edu-track-omega.vercel.app/",
+    image: EdutrackImg,
   },
-
   {
     id: 2,
     title: "Smart Portfolio v2",
     category: "frontend",
+    categoryLabel: "Frontend",
     description:
-      "A stunning animated portfolio with futuristic UI and dark/light mode.",
+      "A modern animated portfolio focused on premium UI, dark-first aesthetics, motion systems, and clear recruiter-facing storytelling.",
     tech: ["React", "Tailwind", "Framer Motion"],
     github: "#",
     demo: "#",
-    image: "https://i.imgur.com/NvCzQKk.jpeg"
+    image: PortfolioImg,
   },
-
   {
     id: 3,
-    title: "Realtime Chat App",
-    category: "fullstack",
-    description:
-      "Socket.io chat application with typing indicators and real-time notifications.",
-    tech: ["React", "Node.js", "Socket.io"],
-    github: "#",
-    demo: "#",
-    image: "https://i.imgur.com/IH7tQ6W.jpeg"
-  },
-
-  {
-    id: 4,
-    title: "AI Resume Analyzer",
+    title: "Multimodal Phishing Detection System",
     category: "ml",
+    categoryLabel: "Machine Learning",
     description:
-      "AI-powered resume scoring using NLP and ML models.",
-    tech: ["Python", "Flask", "Scikit-learn"],
+      "A machine learning experiment that explores multimodal phishing detection with a practical research-oriented workflow.",
+    tech: ["Python", "Machine Learning", "Google Colab"],
     github: "#",
-    demo: "#",
-    image: "https://i.imgur.com/vxFIoCm.jpeg"
-  },
-
-  {
-    id: 5,
-    title: "UI Playground – Animation Lab",
-    category: "ui",
-    description:
-      "Showcase of UI animation experiments and 3D interactions.",
-    tech: ["React", "GSAP", "Framer Motion"],
-    github: "#",
-    demo: "#",
-    image: "https://i.imgur.com/2wUe48r.jpeg"
+    demo: "https://colab.research.google.com/drive/1HypmqssqmUxarTKY6poBPsnYEDZZDVfo?usp=sharing",
+    image: MultiImg,
   },
 ];
