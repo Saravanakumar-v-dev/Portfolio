@@ -46,27 +46,33 @@ export default function SkillsGrid({ groups }) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-120px" }}
           transition={{ duration: 0.5, delay: index * 0.08 }}
-          className="card-panel"
+          className="card-panel px-4 py-5 sm:p-6 md:p-7"
         >
-          <div className="flex items-start justify-between gap-4">
+          <div className="flex items-start justify-between gap-3">
             <div>
               <p className="text-sm font-medium uppercase tracking-[0.22em] text-cyan-300/80">Skill group</p>
-              <h3 className="mt-3 text-2xl font-semibold text-theme-primary">{group.title}</h3>
+              <h3 className="mt-3 text-xl font-semibold text-theme-primary sm:text-2xl">{group.title}</h3>
             </div>
-            <span className="chip">{proficiencyByGroup[group.title]}%</span>
+            <span className="chip shrink-0">{proficiencyByGroup[group.title]}%</span>
           </div>
 
-          <div className="mt-6 h-2 overflow-hidden rounded-full bg-white/10">
+          <div className="mt-5 block">
+            <div className="mb-2 flex items-center justify-between text-xs text-theme-muted">
+              <span>Proficiency</span>
+              <span>{proficiencyByGroup[group.title]}%</span>
+            </div>
+            <div className="h-2.5 w-full overflow-hidden rounded-full bg-white/10">
             <motion.div
               initial={{ width: 0 }}
               whileInView={{ width: `${proficiencyByGroup[group.title]}%` }}
               viewport={{ once: true, margin: "-120px" }}
               transition={{ duration: 0.8, delay: index * 0.1 }}
-              className="h-full rounded-full bg-gradient-to-r from-blue-400 via-cyan-300 to-emerald-300"
+              className="h-full min-w-[3.5rem] rounded-full bg-gradient-to-r from-blue-400 via-cyan-300 to-emerald-300"
             />
+            </div>
           </div>
 
-          <div className="mt-7 flex flex-wrap gap-3">
+          <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
             {group.skills.map((skill) => {
               const skillMeta = iconMap[skill.name];
               const Icon = skillMeta?.icon;
@@ -75,16 +81,16 @@ export default function SkillsGrid({ groups }) {
                 <motion.div
                   key={skill.name}
                   whileHover={{ y: -4, scale: 1.02 }}
-                  className="flex min-w-[8.5rem] flex-1 items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3"
+                  className="flex min-w-0 items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-3 py-3 sm:px-4"
                 >
                   <div
-                    className="flex h-10 w-10 items-center justify-center rounded-2xl"
+                    className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl"
                     style={{ backgroundColor: `${skillMeta?.color ?? "#7c9cff"}22` }}
                   >
                     {Icon ? <Icon style={{ color: skillMeta.color }} /> : null}
                   </div>
-                  <div>
-                    <p className="text-sm font-medium text-theme-primary">{skill.name}</p>
+                  <div className="min-w-0">
+                    <p className="truncate text-sm font-medium text-theme-primary">{skill.name}</p>
                     <p className="text-xs text-theme-muted">Production ready</p>
                   </div>
                 </motion.div>

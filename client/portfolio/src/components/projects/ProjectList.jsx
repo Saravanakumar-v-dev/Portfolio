@@ -13,6 +13,7 @@ export default function ProjectList({ projects = [] }) {
   const [filter, setFilter] = useState("all");
   const [search, setSearch] = useState("");
   const [selectedProject, setSelectedProject] = useState(null);
+  const [modalFromHistory, setModalFromHistory] = useState(false);
 
   const filteredProjects = useMemo(() => {
     return projects.filter((project) => {
@@ -29,19 +30,57 @@ export default function ProjectList({ projects = [] }) {
   }, [filter, projects, search]);
 
   useEffect(() => {
+    const handlePopState = (event) => {
+      if (event.state?.projectModalId) {
+        const matchingProject = projects.find((project) => project.id === event.state.projectModalId);
+        setSelectedProject(matchingProject ?? null);
+        setModalFromHistory(Boolean(matchingProject));
+      } else {
+        setSelectedProject(null);
+        setModalFromHistory(false);
+      }
+    };
+
+    window.addEventListener("popstate", handlePopState);
+
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, [projects]);
+
+  useEffect(() => {
     if (!selectedProject) {
+      document.body.style.overflow = "";
       return undefined;
     }
 
     const onKeyDown = (event) => {
       if (event.key === "Escape") {
-        setSelectedProject(null);
+        closeProjectDetails();
       }
     };
 
+    document.body.style.overflow = "hidden";
     window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", onKeyDown);
+    };
   }, [selectedProject]);
+
+  const openProjectDetails = (project) => {
+    window.history.pushState({ projectModalId: project.id }, "", `#project-${project.id}`);
+    setModalFromHistory(true);
+    setSelectedProject(project);
+  };
+
+  const closeProjectDetails = () => {
+    if (modalFromHistory) {
+      setModalFromHistory(false);
+      window.history.back();
+      return;
+    }
+
+    setSelectedProject(null);
+  };
 
   return (
     <div className="space-y-8">
@@ -130,7 +169,7 @@ export default function ProjectList({ projects = [] }) {
                 ) : (
                   <button
                     type="button"
-                    onClick={() => setSelectedProject(project)}
+                    onClick={() => openProjectDetails(project)}
                     className="cta-primary flex-1 justify-center rounded-2xl px-4 py-3"
                   >
                     View Details
@@ -151,7 +190,7 @@ export default function ProjectList({ projects = [] }) {
                 ) : (
                   <button
                     type="button"
-                    onClick={() => setSelectedProject(project)}
+                    onClick={() => openProjectDetails(project)}
                     className="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-theme-primary transition hover:bg-white/10"
                     aria-label={`Open ${project.title} details`}
                   >
@@ -187,24 +226,24 @@ export default function ProjectList({ projects = [] }) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 p-4 backdrop-blur-md"
-            onClick={() => setSelectedProject(null)}
+            className="fixed inset-0 z-50 flex items-end justify-center bg-slate-950/80 p-3 backdrop-blur-md sm:items-center sm:p-4"
+            onClick={closeProjectDetails}
           >
             <motion.div
-              initial={{ opacity: 0, y: 32, scale: 0.96 }}
+              initial={{ opacity: 0, y: 32, scale: 0.98 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 24, scale: 0.97 }}
+              exit={{ opacity: 0, y: 24, scale: 0.98 }}
               transition={{ duration: 0.25 }}
               role="dialog"
               aria-modal="true"
               aria-labelledby="project-dialog-title"
-              className="glass-panel relative w-full max-w-3xl overflow-hidden rounded-[32px]"
+              className="glass-panel relative w-full max-w-3xl overflow-hidden rounded-[28px] max-h-[88vh] sm:rounded-[32px]"
               onClick={(event) => event.stopPropagation()}
             >
               <button
                 type="button"
-                onClick={() => setSelectedProject(null)}
-                className="absolute right-5 top-5 z-10 flex h-11 w-11 items-center justify-center rounded-full bg-slate-950/75 text-theme-primary"
+                onClick={closeProjectDetails}
+                className="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-slate-950/75 text-theme-primary sm:right-5 sm:top-5 sm:h-11 sm:w-11"
                 aria-label="Close project details"
               >
                 <FaTimes />
@@ -213,15 +252,15 @@ export default function ProjectList({ projects = [] }) {
               <img
                 src={selectedProject.image}
                 alt={`${selectedProject.title} preview`}
-                className="h-72 w-full object-cover"
+                className="h-48 w-full object-cover sm:h-72"
               />
 
-              <div className="p-8">
+              <div className="max-h-[calc(88vh-12rem)] overflow-y-auto p-5 sm:max-h-[calc(88vh-18rem)] sm:p-8">
                 <p className="text-sm font-medium uppercase tracking-[0.24em] text-cyan-300/80">Project spotlight</p>
-                <h3 id="project-dialog-title" className="mt-4 text-3xl font-semibold text-theme-primary">
+                <h3 id="project-dialog-title" className="mt-4 text-2xl font-semibold text-theme-primary sm:text-3xl">
                   {selectedProject.title}
                 </h3>
-                <p className="mt-4 text-base leading-8 text-theme-secondary">{selectedProject.description}</p>
+                <p className="mt-4 text-sm leading-7 text-theme-secondary sm:text-base sm:leading-8">{selectedProject.description}</p>
 
                 <div className="mt-6 flex flex-wrap gap-2">
                   {selectedProject.tech.map((item) => (
@@ -231,13 +270,13 @@ export default function ProjectList({ projects = [] }) {
                   ))}
                 </div>
 
-                <div className="mt-8 flex flex-wrap gap-3">
+                <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                   {selectedProject.demo && selectedProject.demo !== "#" && (
                     <a
                       href={selectedProject.demo}
                       target="_blank"
                       rel="noreferrer"
-                      className="cta-primary"
+                      className="cta-primary w-full sm:w-auto"
                     >
                       Open Live Demo
                       <FaExternalLinkAlt className="text-xs" />
@@ -248,7 +287,7 @@ export default function ProjectList({ projects = [] }) {
                       href={selectedProject.github}
                       target="_blank"
                       rel="noreferrer"
-                      className="cta-secondary"
+                      className="cta-secondary w-full sm:w-auto"
                     >
                       <FaGithub />
                       Source Code

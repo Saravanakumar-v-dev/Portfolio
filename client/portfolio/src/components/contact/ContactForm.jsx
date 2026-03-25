@@ -103,13 +103,13 @@ export default function ContactForm() {
         </p>
       </motion.div>
 
-      <div className="mt-12 grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
+      <div className="mt-10 grid gap-5 lg:mt-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-6">
         <motion.div
           initial={{ opacity: 0, x: -24 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, margin: "-120px" }}
           transition={{ duration: 0.55 }}
-          className="card-panel"
+          className="card-panel px-4 py-5 sm:p-6 md:p-7"
         >
           <p className="text-sm font-medium uppercase tracking-[0.24em] text-cyan-300/80">Best channels</p>
           <div className="mt-6 space-y-4">
@@ -130,7 +130,7 @@ export default function ContactForm() {
 
               if (item.href) {
                 return (
-                  <a key={item.label} href={item.href}>
+                  <a key={item.label} href={item.href} className="block">
                     {content}
                   </a>
                 );
@@ -148,7 +148,7 @@ export default function ContactForm() {
             </p>
           </div>
 
-          <div className="mt-8 flex flex-wrap gap-3">
+          <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2">
             {socialLinks.map((item) => {
               const Icon = item.icon;
 
@@ -158,7 +158,7 @@ export default function ContactForm() {
                   href={item.href}
                   target="_blank"
                   rel="noreferrer"
-                  className="cta-secondary"
+                  className="cta-secondary w-full justify-center"
                 >
                   <Icon />
                   {item.label}
@@ -174,10 +174,10 @@ export default function ContactForm() {
           viewport={{ once: true, margin: "-120px" }}
           transition={{ duration: 0.55 }}
           onSubmit={handleSubmit}
-          className="card-panel space-y-5"
+          className="card-panel space-y-5 px-4 py-5 sm:p-6 md:p-7"
           noValidate
         >
-          <div className="grid gap-5 md:grid-cols-2">
+          <div className="grid gap-4 sm:gap-5 md:grid-cols-2">
             <label className="block">
               <span className="mb-2 block text-sm font-medium text-theme-secondary">Full name</span>
               <input
@@ -219,14 +219,14 @@ export default function ContactForm() {
             />
           </label>
 
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <div className="text-sm text-theme-muted">
+          <div className="flex flex-col gap-4">
+            <div className="text-sm leading-6 text-theme-muted">
               Typical response topics: frontend roles, portfolio redesigns, MERN builds, and collaboration.
             </div>
             <button
               type="submit"
               disabled={loading || !isFormValid}
-              className="cta-primary min-w-[12rem] disabled:cursor-not-allowed disabled:opacity-60"
+              className="cta-primary w-full justify-center disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto sm:min-w-[12rem]"
             >
               {loading ? (
                 "Sending..."
