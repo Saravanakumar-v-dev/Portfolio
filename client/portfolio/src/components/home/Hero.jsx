@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { FaArrowRight, FaDownload, FaGithub, FaLinkedin } from "react-icons/fa";
 import profilePic from "../../assets/Saravans.jpeg";
 import resumeFile from "../../assets/New_resume.pdf";
@@ -14,28 +14,14 @@ const stats = [
 
 export default function Hero() {
   const [roleIndex, setRoleIndex] = useState(0);
-  const [displayText, setDisplayText] = useState("");
-  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
-    const currentRole = roles[roleIndex];
-    const timeout = window.setTimeout(() => {
-      if (isDeleting) {
-        if (displayText.length > 0) {
-          setDisplayText(currentRole.slice(0, displayText.length - 1));
-        } else {
-          setIsDeleting(false);
-          setRoleIndex((current) => (current + 1) % roles.length);
-        }
-      } else if (displayText.length < currentRole.length) {
-        setDisplayText(currentRole.slice(0, displayText.length + 1));
-      } else {
-        window.setTimeout(() => setIsDeleting(true), 1200);
-      }
-    }, isDeleting ? 45 : 85);
+    const interval = window.setInterval(() => {
+      setRoleIndex((current) => (current + 1) % roles.length);
+    }, 2400);
 
-    return () => window.clearTimeout(timeout);
-  }, [displayText, isDeleting, roleIndex]);
+    return () => window.clearInterval(interval);
+  }, []);
 
   return (
     <section className="section-shell relative z-10 grid items-center gap-12 pt-28 lg:grid-cols-[1.15fr_0.85fr] lg:pt-36">
@@ -62,8 +48,18 @@ export default function Hero() {
             <span className="gradient-text"> modern motion, clarity, and craft.</span>
           </h1>
           <div className="h-8 text-lg text-theme-secondary sm:text-xl">
-            <span>{displayText}</span>
-            <span className="ml-1 inline-block text-cyan-300">|</span>
+            <AnimatePresence mode="wait">
+              <motion.span
+                key={roles[roleIndex]}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.24 }}
+                className="inline-flex items-center"
+              >
+                {roles[roleIndex]}
+              </motion.span>
+            </AnimatePresence>
           </div>
           <p className="max-w-2xl text-base leading-8 text-theme-secondary sm:text-lg">
             I build modern websites and full-stack products with clean UI, smooth motion, and
@@ -150,21 +146,9 @@ export default function Hero() {
       >
         <div className="absolute inset-0 -z-10 rounded-[32px] bg-gradient-to-br from-blue-500/20 via-cyan-400/10 to-emerald-400/10 blur-3xl" />
 
-        <motion.div
-          animate={{ y: [0, -8, 0] }}
-          transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
-          className="glass-panel relative overflow-hidden rounded-[32px] p-6"
-        >
-          <motion.div
-            animate={{ opacity: [0.3, 0.75, 0.3], scale: [1, 1.06, 1] }}
-            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute -right-12 top-8 h-28 w-28 rounded-full bg-cyan-300/20 blur-3xl"
-          />
-          <motion.div
-            animate={{ opacity: [0.2, 0.55, 0.2], scale: [1.05, 0.95, 1.05] }}
-            transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute -left-10 bottom-8 h-24 w-24 rounded-full bg-blue-400/20 blur-3xl"
-          />
+        <motion.div className="glass-panel relative overflow-hidden rounded-[32px] p-6">
+          <div className="absolute -right-12 top-8 h-28 w-28 rounded-full bg-cyan-300/20 blur-3xl" />
+          <div className="absolute -left-10 bottom-8 h-24 w-24 rounded-full bg-blue-400/20 blur-3xl" />
           <div className="absolute inset-x-6 top-6 flex items-center justify-between">
             <div className="chip bg-white/10">Frontend first</div>
             <div className="chip bg-white/10">React + Tailwind</div>

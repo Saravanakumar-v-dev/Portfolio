@@ -30,12 +30,6 @@ const iconMap = {
   VSCode: { icon: VscCode, color: "#60a5fa" },
 };
 
-const proficiencyByGroup = {
-  Frontend: 88,
-  Backend: 78,
-  "Tools & Languages": 81,
-};
-
 export default function SkillsGrid({ groups }) {
   return (
     <div className="grid gap-6 lg:grid-cols-3">
@@ -53,30 +47,12 @@ export default function SkillsGrid({ groups }) {
               <p className="text-sm font-medium uppercase tracking-[0.22em] text-cyan-300/80">Skill group</p>
               <h3 className="mt-3 text-xl font-semibold text-theme-primary sm:text-2xl">{group.title}</h3>
             </div>
-            <span className="chip shrink-0">{proficiencyByGroup[group.title]}%</span>
-          </div>
-
-          <div className="mt-5 block">
-            <div className="mb-2 flex items-center justify-between text-xs text-theme-muted">
-              <span>Proficiency</span>
-              <span>{proficiencyByGroup[group.title]}%</span>
-            </div>
-            <div className="h-2.5 w-full overflow-hidden rounded-full bg-white/10">
-            <motion.div
-              initial={false}
-              animate={{ width: `${proficiencyByGroup[group.title]}%` }}
-              transition={{ duration: 0.5, delay: index * 0.08 }}
-              className="h-full min-w-[3.5rem] rounded-full bg-gradient-to-r from-blue-400 via-cyan-300 to-emerald-300"
-            />
-            </div>
           </div>
 
           <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
             {group.skills.map((skill) => {
               const skillMeta = iconMap[skill.name];
               const Icon = skillMeta?.icon;
-              const level = skill.level ?? proficiencyByGroup[group.title];
-
               return (
                 <motion.div
                   key={skill.name}
@@ -92,15 +68,6 @@ export default function SkillsGrid({ groups }) {
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center justify-between gap-2">
                       <p className="truncate text-sm font-medium text-theme-primary">{skill.name}</p>
-                      <span className="shrink-0 text-[11px] font-medium text-theme-muted">{level}%</span>
-                    </div>
-                    <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-white/10">
-                      <motion.div
-                        initial={false}
-                        animate={{ width: `${level}%` }}
-                        transition={{ duration: 0.45, delay: index * 0.04 }}
-                        className="h-full rounded-full bg-gradient-to-r from-blue-400 via-cyan-300 to-emerald-300"
-                      />
                     </div>
                     <p className="mt-2 text-xs text-theme-muted">Production ready</p>
                   </div>

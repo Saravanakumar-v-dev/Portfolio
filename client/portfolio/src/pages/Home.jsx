@@ -45,11 +45,11 @@ export default function Home() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-120px" }}
           transition={{ duration: 0.45 }}
-          className="section-shell mt-16 overflow-hidden rounded-full border border-white/10 bg-white/5 py-4"
+          className="section-shell mt-16 overflow-hidden rounded-[28px] border border-white/10 bg-white/5 py-4"
           aria-label="Technology marquee"
         >
-          <div className="flex min-w-max gap-3 px-4 text-sm text-theme-secondary animate-marquee">
-            {[...stackMarquee, ...stackMarquee].map((item, index) => (
+          <div className="flex flex-wrap justify-center gap-3 px-4 text-sm text-theme-secondary">
+            {stackMarquee.map((item, index) => (
               <span key={`${item}-${index}`} className="chip whitespace-nowrap">
                 {item}
               </span>

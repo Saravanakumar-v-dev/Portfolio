@@ -20,7 +20,8 @@ export default function Navbar() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 24);
+      const nextScrolled = window.scrollY > 24;
+      setScrolled((currentScrolled) => (currentScrolled === nextScrolled ? currentScrolled : nextScrolled));
     };
 
     const observer = new IntersectionObserver(

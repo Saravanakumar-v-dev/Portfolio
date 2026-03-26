@@ -127,7 +127,7 @@ export default function ProjectList({ projects = [] }) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-120px" }}
             transition={{ duration: 0.45, delay: index * 0.08 }}
-            whileHover={{ y: -8, rotateX: 3 }}
+            whileHover={{ y: -6 }}
             className="group card-panel flex h-full flex-col overflow-hidden p-0"
           >
             <div className="relative overflow-hidden">
