@@ -1,6 +1,7 @@
 import EdutrackImg from "../assets/Edutrack.png";
 import MultiImg from "../assets/Multi.png";
 import PortfolioImg from "../assets/Portfolio.png";
+import JobImg from "../assets/Job.png";
 
 export const projects = [
   {
@@ -38,5 +39,17 @@ export const projects = [
     github: "#",
     demo: "https://colab.research.google.com/drive/1HypmqssqmUxarTKY6poBPsnYEDZZDVfo?usp=sharing",
     image: MultiImg,
+  },
+  {
+    id: 4,
+    title: "JobTracker",
+    category: "fullstack",
+    categoryLabel: "Full-Stack",
+    description:
+      "A full-stack application to track and manage job applications efficiently.",
+    tech: ["React", "Node.js", "MongoDB", "Express"],
+    github: "#",
+    demo: "https://job-tracker-gold-ten.vercel.app/",
+    image: JobImg,
   },
 ];
