@@ -26,7 +26,7 @@ export const projects = [
       "A free, deterministic audit tool that reveals exactly how much engineering teams overspend on AI subscriptions — Cursor, Copilot, ChatGPT, Claude, and API platforms — with shareable, privacy-safe reports and line-item savings.",
     tech: ["Next.js", "Tailwind CSS", "Supabase", "Zod", "Claude AI"],
     github: "#",
-    demo: "#",
+    demo: "https://ai-spend-audit-git-main-saravana0070s-projects.vercel.app/",
     image: CredexImg,
   },
   {
