@@ -124,6 +124,7 @@ textarea {
     top: 7rem;
     left: -4rem;
     background: rgba(124, 156, 255, 0.18);
+    animation: float-orb 12s ease-in-out infinite;
   }
 
   .page-shell::after {
@@ -132,6 +133,7 @@ textarea {
     right: -3rem;
     top: 40rem;
     background: rgba(45, 212, 191, 0.16);
+    animation: float-orb 15s ease-in-out infinite reverse;
   }
 
   .section-shell {
@@ -184,6 +186,12 @@ textarea {
     background: var(--gradient-surface);
     border: 1px solid var(--border);
     box-shadow: var(--shadow-card);
+    transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.4s ease;
+  }
+
+  .card-panel:hover {
+    border-color: rgba(124, 156, 255, 0.25);
+    box-shadow: var(--shadow-card), 0 0 30px rgba(124, 156, 255, 0.08);
   }
 
   .chip {
@@ -191,13 +199,39 @@ textarea {
     background: rgba(255, 255, 255, 0.06);
     border: 1px solid var(--border);
     color: var(--text-secondary);
+    transition: all 0.3s ease;
+  }
+
+  .chip:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(124, 156, 255, 0.3);
   }
 
   .cta-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold transition duration-300;
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold transition-all duration-300;
     color: #f8fafc;
     background: var(--gradient-brand);
     box-shadow: 0 20px 40px rgba(52, 81, 255, 0.3);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-primary::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.15) 50%,
+      transparent 100%
+    );
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
+  }
+
+  .cta-primary:hover::before {
+    transform: translateX(100%);
   }
 
   .cta-primary:hover {
@@ -206,7 +240,7 @@ textarea {
   }
 
   .cta-secondary {
-    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold transition duration-300;
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold transition-all duration-300;
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid var(--border);
     color: var(--text-primary);
@@ -215,10 +249,12 @@ textarea {
   .cta-secondary:hover {
     transform: translateY(-2px);
     background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(124, 156, 255, 0.3);
+    box-shadow: 0 8px 24px rgba(124, 156, 255, 0.12);
   }
 
   .input-shell {
-    @apply w-full rounded-2xl px-4 py-4 outline-none transition duration-200;
+    @apply w-full rounded-2xl px-4 py-4 outline-none transition-all duration-300;
     background: rgba(255, 255, 255, 0.04);
     border: 1px solid var(--border);
     color: var(--text-primary);
@@ -226,11 +262,17 @@ textarea {
 
   .input-shell::placeholder {
     color: var(--text-muted);
+    transition: color 0.3s ease;
   }
 
   .input-shell:focus {
     border-color: rgba(124, 156, 255, 0.5);
-    box-shadow: 0 0 0 4px rgba(124, 156, 255, 0.12);
+    box-shadow: 0 0 0 4px rgba(124, 156, 255, 0.12), 0 8px 24px rgba(124, 156, 255, 0.08);
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  .input-shell:focus::placeholder {
+    color: transparent;
   }
 
   .nav-pill {
@@ -250,6 +292,230 @@ textarea {
     background-clip: text;
     color: transparent;
   }
+
+  .gradient-text-animated {
+    background: linear-gradient(
+      90deg,
+      #7c9cff 0%,
+      #69d8ff 25%,
+      #2dd4bf 50%,
+      #69d8ff 75%,
+      #7c9cff 100%
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: gradient-shift 4s linear infinite;
+  }
+}
+
+/* ========================================
+   PREMIUM ANIMATIONS
+   ======================================== */
+
+/* Floating orb animation for ambient background */
+@keyframes float-orb {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  25% {
+    transform: translate(30px, -20px) scale(1.05);
+  }
+  50% {
+    transform: translate(-15px, 15px) scale(0.95);
+  }
+  75% {
+    transform: translate(20px, 10px) scale(1.02);
+  }
+}
+
+/* Gradient shift for animated text */
+@keyframes gradient-shift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Pulse glow for highlights */
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(124, 156, 255, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 20px 8px rgba(124, 156, 255, 0.15);
+  }
+}
+
+/* Shimmer sweep effect */
+@keyframes shimmer-sweep {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Spin slow for decorative elements */
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Bounce subtle for interactive elements */
+@keyframes bounce-subtle {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+/* Timeline dot pulse */
+@keyframes dot-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(34, 211, 238, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(34, 211, 238, 0);
+  }
+}
+
+/* Skill bar fill animation */
+@keyframes skill-fill {
+  from {
+    width: 0%;
+  }
+  to {
+    width: var(--fill-width, 0%);
+  }
+}
+
+/* Float up entrance */
+@keyframes float-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Morphing blob for background */
+@keyframes morph {
+  0%, 100% {
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+  }
+  50% {
+    border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
+  }
+}
+
+/* ========================================
+   UTILITY CLASSES FOR ANIMATIONS
+   ======================================== */
+
+.animate-float-orb {
+  animation: float-orb 8s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.animate-spin-slow {
+  animation: spin-slow 20s linear infinite;
+}
+
+.animate-bounce-subtle {
+  animation: bounce-subtle 2s ease-in-out infinite;
+}
+
+.animate-dot-pulse {
+  animation: dot-pulse 2s ease-in-out infinite;
+}
+
+.animate-morph {
+  animation: morph 8s ease-in-out infinite;
+}
+
+.animate-gradient-text {
+  animation: gradient-shift 4s linear infinite;
+}
+
+/* Stagger children animation delays */
+.stagger-children > *:nth-child(1) { animation-delay: 0ms; }
+.stagger-children > *:nth-child(2) { animation-delay: 80ms; }
+.stagger-children > *:nth-child(3) { animation-delay: 160ms; }
+.stagger-children > *:nth-child(4) { animation-delay: 240ms; }
+.stagger-children > *:nth-child(5) { animation-delay: 320ms; }
+.stagger-children > *:nth-child(6) { animation-delay: 400ms; }
+
+/* Gradient border hover effect */
+.gradient-border-hover {
+  position: relative;
+}
+
+.gradient-border-hover::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: var(--gradient-brand);
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+
+.gradient-border-hover:hover::after {
+  opacity: 1;
+}
+
+/* Ambient particles */
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0.3;
+  filter: blur(1px);
+}
+
+.particle-1 {
+  width: 4px;
+  height: 4px;
+  background: #7c9cff;
+  animation: float-orb 7s ease-in-out infinite;
+}
+
+.particle-2 {
+  width: 3px;
+  height: 3px;
+  background: #69d8ff;
+  animation: float-orb 9s ease-in-out infinite reverse;
+}
+
+.particle-3 {
+  width: 5px;
+  height: 5px;
+  background: #2dd4bf;
+  animation: float-orb 11s ease-in-out infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {

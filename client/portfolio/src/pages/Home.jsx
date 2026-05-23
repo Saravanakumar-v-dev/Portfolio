@@ -19,6 +19,8 @@ const stackMarquee = [
   "Framer Motion",
   "Node.js",
   "MongoDB",
+  "Next.js",
+  "Supabase",
   "Responsive UI",
   "Portfolio Design",
   "API Integration",
@@ -50,9 +52,17 @@ export default function Home() {
         >
           <div className="flex flex-wrap justify-center gap-3 px-4 text-sm text-theme-secondary">
             {stackMarquee.map((item, index) => (
-              <span key={`${item}-${index}`} className="chip whitespace-nowrap">
+              <motion.span
+                key={`${item}-${index}`}
+                className="chip whitespace-nowrap"
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.05, duration: 0.3 }}
+                whileHover={{ scale: 1.1, y: -2 }}
+              >
                 {item}
-              </span>
+              </motion.span>
             ))}
           </div>
         </motion.section>
@@ -70,7 +80,14 @@ export default function Home() {
             viewport={{ once: true, margin: "-120px" }}
             transition={{ duration: 0.5 }}
           >
-            <span className="eyebrow">Skills</span>
+            <motion.span
+              className="eyebrow"
+              whileInView={{ scale: [0.9, 1] }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4 }}
+            >
+              Skills
+            </motion.span>
             <h2 className="section-title mt-6">A balanced stack across modern frontend craft, backend delivery, and developer tooling.</h2>
             <p className="section-copy">
               The emphasis is strongest on building polished React experiences, but I can support
@@ -124,7 +141,14 @@ export default function Home() {
             viewport={{ once: true, margin: "-120px" }}
             transition={{ duration: 0.5 }}
           >
-            <span className="eyebrow">Projects</span>
+            <motion.span
+              className="eyebrow"
+              whileInView={{ scale: [0.9, 1] }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4 }}
+            >
+              Projects
+            </motion.span>
             <h2 className="section-title mt-6">Interactive case studies that show implementation skill and visual polish.</h2>
             <p className="section-copy">
               Each project card is designed to surface the tech stack, intent, and next action

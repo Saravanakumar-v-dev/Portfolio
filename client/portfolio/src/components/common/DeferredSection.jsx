@@ -1,5 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 
+/**
+ * Custom event name used by the navbar to force-render all deferred sections.
+ * When dispatched, every DeferredSection immediately renders its children
+ * so that `getElementById` calls for scroll targets succeed.
+ */
+const FORCE_RENDER_EVENT = "deferred-section-force-render";
+
+export { FORCE_RENDER_EVENT };
+
 export default function DeferredSection({
   children,
   minHeight = 220,
@@ -8,6 +17,19 @@ export default function DeferredSection({
 }) {
   const targetRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    // Listen for the global force-render event (fired by navbar before scrolling)
+    const handleForceRender = () => {
+      setIsVisible(true);
+    };
+
+    window.addEventListener(FORCE_RENDER_EVENT, handleForceRender);
+
+    return () => {
+      window.removeEventListener(FORCE_RENDER_EVENT, handleForceRender);
+    };
+  }, []);
 
   useEffect(() => {
     if (isVisible) {

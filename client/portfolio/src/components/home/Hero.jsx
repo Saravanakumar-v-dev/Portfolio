@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import React, { useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion, useInView } from "framer-motion";
 import { FaArrowRight, FaDownload, FaGithub, FaLinkedin } from "react-icons/fa";
+import Tilt from "react-parallax-tilt";
 import profilePic from "../../assets/Saravans.jpeg";
 import resumeFile from "../../assets/New_resume.pdf";
 
@@ -8,9 +9,133 @@ const roles = ["Frontend Engineer", "MERN Stack Developer", "UI-Focused Problem 
 
 const stats = [
   { value: "2025", label: "B.Tech graduate" },
-  { value: "3", label: "Featured builds" },
+  { value: "4", label: "Featured builds" },
   { value: "100%", label: "Responsive-first" },
 ];
+
+// Staggered container animation
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.12,
+      delayChildren: 0.1,
+    },
+  },
+};
+
+const childVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  },
+};
+
+// Word-by-word animation for heading
+function AnimatedHeading({ text, className }) {
+  const words = text.split(" ");
+  return (
+    <span className={className}>
+      {words.map((word, i) => (
+        <motion.span
+          key={`${word}-${i}`}
+          initial={{ opacity: 0, y: 20, filter: "blur(4px)" }}
+          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          transition={{
+            duration: 0.5,
+            delay: 0.3 + i * 0.06,
+            ease: [0.22, 1, 0.36, 1],
+          }}
+          className="inline-block"
+        >
+          {word}&nbsp;
+        </motion.span>
+      ))}
+    </span>
+  );
+}
+
+// Count-up animation for stats
+function CountUp({ target, duration = 1.5 }) {
+  const [count, setCount] = useState(0);
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true });
+
+  useEffect(() => {
+    if (!isInView) return;
+
+    const numericTarget = parseInt(target.replace(/\D/g, ""), 10);
+    if (isNaN(numericTarget) || numericTarget === 0) {
+      setCount(target);
+      return;
+    }
+
+    const increment = numericTarget / (duration * 60);
+    let current = 0;
+    const timer = setInterval(() => {
+      current += increment;
+      if (current >= numericTarget) {
+        setCount(target);
+        clearInterval(timer);
+      } else {
+        setCount(Math.floor(current).toString());
+      }
+    }, 1000 / 60);
+
+    return () => clearInterval(timer);
+  }, [isInView, target, duration]);
+
+  return <span ref={ref}>{count || target}</span>;
+}
+
+// Floating particles
+function FloatingParticles() {
+  const particles = [
+    { size: 4, color: "rgba(124,156,255,0.3)", x: "10%", y: "20%", delay: 0 },
+    { size: 3, color: "rgba(105,216,255,0.25)", x: "80%", y: "15%", delay: 2 },
+    { size: 5, color: "rgba(45,212,191,0.2)", x: "60%", y: "70%", delay: 4 },
+    { size: 3, color: "rgba(124,156,255,0.25)", x: "25%", y: "80%", delay: 1 },
+    { size: 4, color: "rgba(105,216,255,0.2)", x: "90%", y: "50%", delay: 3 },
+    { size: 6, color: "rgba(45,212,191,0.15)", x: "40%", y: "30%", delay: 5 },
+  ];
+
+  return (
+    <div className="pointer-events-none absolute inset-0 overflow-hidden">
+      {particles.map((p, i) => (
+        <motion.div
+          key={i}
+          className="absolute rounded-full"
+          style={{
+            width: p.size,
+            height: p.size,
+            background: p.color,
+            left: p.x,
+            top: p.y,
+            filter: "blur(1px)",
+          }}
+          animate={{
+            y: [0, -20, 10, -15, 0],
+            x: [0, 15, -10, 5, 0],
+            opacity: [0.3, 0.6, 0.3, 0.5, 0.3],
+            scale: [1, 1.2, 0.9, 1.1, 1],
+          }}
+          transition={{
+            duration: 8 + i * 2,
+            repeat: Infinity,
+            delay: p.delay,
+            ease: "easeInOut",
+          }}
+        />
+      ))}
+    </div>
+  );
+}
 
 export default function Hero() {
   const [roleIndex, setRoleIndex] = useState(0);
@@ -25,161 +150,251 @@ export default function Hero() {
 
   return (
     <section className="section-shell relative z-10 grid items-center gap-12 pt-28 lg:grid-cols-[1.15fr_0.85fr] lg:pt-36">
-      <div className="space-y-8">
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="eyebrow"
-        >
-          <span className="h-2 w-2 rounded-full bg-emerald-400" />
+      <FloatingParticles />
+
+      <motion.div
+        className="space-y-8"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        <motion.div variants={childVariants} className="eyebrow">
+          <motion.span
+            className="h-2 w-2 rounded-full bg-emerald-400"
+            animate={{ scale: [1, 1.4, 1], opacity: [1, 0.6, 1] }}
+            transition={{ duration: 2, repeat: Infinity }}
+          />
           Open to frontend and full-stack roles
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 28 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.55, delay: 0.05 }}
-          className="space-y-5"
-        >
-          <p className="text-sm font-medium uppercase tracking-[0.3em] text-cyan-300/80">Portfolio</p>
+        <motion.div variants={childVariants} className="space-y-5">
+          <motion.p
+            className="text-sm font-medium uppercase tracking-[0.3em] text-cyan-300/80"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            Portfolio
+          </motion.p>
           <h1 className="max-w-4xl text-5xl font-semibold leading-[1.05] text-theme-primary sm:text-6xl lg:text-7xl">
-            Designing polished digital products with
-            <span className="gradient-text"> modern motion, clarity, and craft.</span>
+            <AnimatedHeading text="Designing polished digital products with" />
+            <span className="gradient-text-animated"> modern motion, clarity, and craft.</span>
           </h1>
           <div className="h-8 text-lg text-theme-secondary sm:text-xl">
             <AnimatePresence mode="wait">
               <motion.span
                 key={roles[roleIndex]}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.24 }}
+                initial={{ opacity: 0, y: 16, filter: "blur(4px)" }}
+                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                exit={{ opacity: 0, y: -16, filter: "blur(4px)" }}
+                transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
                 className="inline-flex items-center"
               >
+                <span className="mr-2 inline-block h-[2px] w-5 bg-cyan-400/60" />
                 {roles[roleIndex]}
               </motion.span>
             </AnimatePresence>
           </div>
-          <p className="max-w-2xl text-base leading-8 text-theme-secondary sm:text-lg">
+          <motion.p
+            className="max-w-2xl text-base leading-8 text-theme-secondary sm:text-lg"
+            variants={childVariants}
+          >
             I build modern websites and full-stack products with clean UI, smooth motion, and
             responsive user experiences.
-          </p>
+          </motion.p>
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 28 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.55, delay: 0.1 }}
-          className="flex flex-wrap gap-4"
-        >
-          <button
+        <motion.div variants={childVariants} className="flex flex-wrap gap-4">
+          <motion.button
             type="button"
             onClick={() => document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" })}
             className="cta-primary"
+            whileHover={{ scale: 1.04, y: -2 }}
+            whileTap={{ scale: 0.97 }}
           >
             Explore Projects
-            <FaArrowRight />
-          </button>
+            <motion.span
+              animate={{ x: [0, 4, 0] }}
+              transition={{ duration: 1.5, repeat: Infinity }}
+            >
+              <FaArrowRight />
+            </motion.span>
+          </motion.button>
 
-          <button
+          <motion.button
             type="button"
             onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
             className="cta-secondary"
+            whileHover={{ scale: 1.04, y: -2 }}
+            whileTap={{ scale: 0.97 }}
           >
             Contact Me
-          </button>
+          </motion.button>
 
-          <a href={resumeFile} download="Saravanakumar-Resume.pdf" className="cta-secondary">
-            <FaDownload />
+          <motion.a
+            href={resumeFile}
+            download="Saravanakumar-Resume.pdf"
+            className="cta-secondary"
+            whileHover={{ scale: 1.04, y: -2 }}
+            whileTap={{ scale: 0.97 }}
+          >
+            <motion.span
+              animate={{ y: [0, -2, 0] }}
+              transition={{ duration: 1.5, repeat: Infinity, delay: 0.5 }}
+            >
+              <FaDownload />
+            </motion.span>
             Download Resume
-          </a>
+          </motion.a>
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 28 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.55, delay: 0.15 }}
-          className="flex flex-wrap items-center gap-3"
-        >
-          <a
+        <motion.div variants={childVariants} className="flex flex-wrap items-center gap-3">
+          <motion.a
             href="https://github.com/Saravanakumar-v-dev"
             target="_blank"
             rel="noreferrer"
-            className="chip transition hover:-translate-y-0.5 hover:bg-white/10"
+            className="chip transition"
+            whileHover={{ y: -3, scale: 1.05, boxShadow: "0 8px 20px rgba(124,156,255,0.2)" }}
           >
             <FaGithub />
             GitHub
-          </a>
-          <a
+          </motion.a>
+          <motion.a
             href="https://www.linkedin.com/in/saravanakumar-v-78912026a"
             target="_blank"
             rel="noreferrer"
-            className="chip transition hover:-translate-y-0.5 hover:bg-white/10"
+            className="chip transition"
+            whileHover={{ y: -3, scale: 1.05, boxShadow: "0 8px 20px rgba(56,189,248,0.2)" }}
           >
             <FaLinkedin />
             LinkedIn
-          </a>
+          </motion.a>
           <span className="chip">Based in Bangalore, India</span>
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 28 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.55, delay: 0.2 }}
-          className="grid gap-4 sm:grid-cols-3"
-        >
-          {stats.map((stat) => (
-            <div key={stat.label} className="card-panel rounded-[24px] p-5">
-              <p className="text-2xl font-semibold text-theme-primary">{stat.value}</p>
+        <motion.div variants={childVariants} className="grid gap-4 sm:grid-cols-3">
+          {stats.map((stat, index) => (
+            <motion.div
+              key={stat.label}
+              className="card-panel rounded-[24px] p-5 gradient-border-hover"
+              whileHover={{ y: -4, scale: 1.02 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            >
+              <p className="text-2xl font-semibold text-theme-primary">
+                <CountUp target={stat.value} />
+              </p>
               <p className="mt-2 text-sm text-theme-muted">{stat.label}</p>
-            </div>
+            </motion.div>
           ))}
         </motion.div>
-      </div>
+      </motion.div>
 
       <motion.div
-        initial={{ opacity: 0, scale: 0.94, y: 24 }}
+        initial={{ opacity: 0, scale: 0.9, y: 40 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
-        transition={{ duration: 0.65, delay: 0.12 }}
+        transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
         className="relative mx-auto w-full max-w-[30rem]"
       >
-        <div className="absolute inset-0 -z-10 rounded-[32px] bg-gradient-to-br from-blue-500/20 via-cyan-400/10 to-emerald-400/10 blur-3xl" />
+        <motion.div
+          className="absolute inset-0 -z-10 rounded-[32px] bg-gradient-to-br from-blue-500/20 via-cyan-400/10 to-emerald-400/10 blur-3xl"
+          animate={{
+            scale: [1, 1.05, 1],
+            opacity: [0.6, 0.8, 0.6],
+          }}
+          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+        />
 
-        <motion.div className="glass-panel relative overflow-hidden rounded-[32px] p-6">
-          <div className="absolute -right-12 top-8 h-28 w-28 rounded-full bg-cyan-300/20 blur-3xl" />
-          <div className="absolute -left-10 bottom-8 h-24 w-24 rounded-full bg-blue-400/20 blur-3xl" />
-          <div className="absolute inset-x-6 top-6 flex items-center justify-between">
-            <div className="chip bg-white/10">Frontend first</div>
-            <div className="chip bg-white/10">React + Tailwind</div>
-          </div>
+        <Tilt
+          tiltMaxAngleX={8}
+          tiltMaxAngleY={8}
+          glareEnable={true}
+          glareMaxOpacity={0.1}
+          glareColor="rgba(124,156,255,0.3)"
+          glareBorderRadius="32px"
+          transitionSpeed={1500}
+          scale={1.02}
+        >
+          <motion.div className="glass-panel relative overflow-hidden rounded-[32px] p-6">
+            {/* Animated glow spots */}
+            <motion.div
+              className="absolute -right-12 top-8 h-28 w-28 rounded-full bg-cyan-300/20 blur-3xl"
+              animate={{
+                x: [0, 10, 0],
+                y: [0, -8, 0],
+                opacity: [0.2, 0.35, 0.2],
+              }}
+              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+            />
+            <motion.div
+              className="absolute -left-10 bottom-8 h-24 w-24 rounded-full bg-blue-400/20 blur-3xl"
+              animate={{
+                x: [0, -8, 0],
+                y: [0, 10, 0],
+                opacity: [0.2, 0.3, 0.2],
+              }}
+              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+            />
 
-          <div className="rounded-[28px] border border-white/10 bg-slate-950/80 p-4 pt-20">
-            <div className="overflow-hidden rounded-[24px] border border-white/10 bg-slate-900">
-              <img
-                src={profilePic}
-                alt="Portrait of Saravanakumar"
-                className="h-[25rem] w-full object-cover object-top"
-                loading="eager"
-                fetchPriority="high"
-                decoding="async"
-                width="464"
-                height="400"
-              />
+            <div className="absolute inset-x-6 top-6 flex items-center justify-between">
+              <motion.div
+                className="chip bg-white/10"
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.8 }}
+              >
+                Frontend first
+              </motion.div>
+              <motion.div
+                className="chip bg-white/10"
+                initial={{ opacity: 0, x: 10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.9 }}
+              >
+                React + Tailwind
+              </motion.div>
             </div>
 
-            <div className="mt-5 grid gap-4 sm:grid-cols-2">
-              <div className="rounded-[22px] border border-white/10 bg-white/5 p-4">
-                <p className="text-sm text-theme-muted">Core strength</p>
-                <p className="mt-2 text-lg font-semibold text-theme-primary">UI systems with smooth UX</p>
+            <div className="rounded-[28px] border border-white/10 bg-slate-950/80 p-4 pt-20">
+              <div className="relative overflow-hidden rounded-[24px] border border-white/10 bg-slate-900">
+                <img
+                  src={profilePic}
+                  alt="Portrait of Saravanakumar"
+                  className="h-[25rem] w-full object-cover object-top"
+                  loading="eager"
+                  fetchPriority="high"
+                  decoding="async"
+                  width="464"
+                  height="400"
+                />
+                {/* Subtle animated gradient overlay at bottom */}
+                <motion.div
+                  className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-slate-900/80 to-transparent"
+                  animate={{ opacity: [0.6, 0.8, 0.6] }}
+                  transition={{ duration: 3, repeat: Infinity }}
+                />
               </div>
-              <div className="rounded-[22px] border border-white/10 bg-white/5 p-4">
-                <p className="text-sm text-theme-muted">Focus areas</p>
-                <p className="mt-2 text-lg font-semibold text-theme-primary">React, APIs, animations</p>
+
+              <div className="mt-5 grid gap-4 sm:grid-cols-2">
+                <motion.div
+                  className="rounded-[22px] border border-white/10 bg-white/5 p-4"
+                  whileHover={{ scale: 1.03, borderColor: "rgba(124,156,255,0.3)" }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
+                  <p className="text-sm text-theme-muted">Core strength</p>
+                  <p className="mt-2 text-lg font-semibold text-theme-primary">UI systems with smooth UX</p>
+                </motion.div>
+                <motion.div
+                  className="rounded-[22px] border border-white/10 bg-white/5 p-4"
+                  whileHover={{ scale: 1.03, borderColor: "rgba(45,212,191,0.3)" }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
+                  <p className="text-sm text-theme-muted">Focus areas</p>
+                  <p className="mt-2 text-lg font-semibold text-theme-primary">React, APIs, animations</p>
+                </motion.div>
               </div>
             </div>
-          </div>
-        </motion.div>
+          </motion.div>
+        </Tilt>
       </motion.div>
     </section>
   );

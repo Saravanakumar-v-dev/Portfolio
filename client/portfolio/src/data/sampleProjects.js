@@ -2,6 +2,7 @@ import EdutrackImg from "../assets/Edutrack.png";
 import MultiImg from "../assets/Multi.png";
 import PortfolioImg from "../assets/Portfolio.png";
 import JobImg from "../assets/Job.png";
+import CredexImg from "../assets/Credex.png";
 
 export const projects = [
   {
@@ -18,6 +19,18 @@ export const projects = [
   },
   {
     id: 2,
+    title: "AI Spend Audit — Credex",
+    category: "fullstack",
+    categoryLabel: "Full-Stack",
+    description:
+      "A free, deterministic audit tool that reveals exactly how much engineering teams overspend on AI subscriptions — Cursor, Copilot, ChatGPT, Claude, and API platforms — with shareable, privacy-safe reports and line-item savings.",
+    tech: ["Next.js", "Tailwind CSS", "Supabase", "Zod", "Claude AI"],
+    github: "#",
+    demo: "#",
+    image: CredexImg,
+  },
+  {
+    id: 3,
     title: "Smart Portfolio v2",
     category: "frontend",
     categoryLabel: "Frontend",
@@ -29,7 +42,7 @@ export const projects = [
     image: PortfolioImg,
   },
   {
-    id: 3,
+    id: 4,
     title: "Multimodal Phishing Detection System",
     category: "ml",
     categoryLabel: "Machine Learning",
@@ -41,7 +54,7 @@ export const projects = [
     image: MultiImg,
   },
   {
-    id: 4,
+    id: 5,
     title: "JobTracker",
     category: "fullstack",
     categoryLabel: "Full-Stack",
