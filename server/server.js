@@ -5,6 +5,7 @@ import connectDB from "./config/db.js";
 import contactRoutes from "./routes/contactRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import adminAuthRoutes from "./routes/adminAuthRoutes.js";
+import viewRoutes from "./routes/viewRoutes.js";
 
 
 
@@ -20,6 +21,7 @@ app.use("/api/admin/auth", adminAuthRoutes);
 
 // Routes
 app.use("/api/contact", contactRoutes);
+app.use("/api/views", viewRoutes);
 
 // Server
 const PORT = process.env.PORT || 8000;

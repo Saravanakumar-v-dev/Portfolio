@@ -3,6 +3,7 @@ import { AnimatePresence, motion, useInView } from "framer-motion";
 import { FaArrowRight, FaDownload, FaGithub, FaLinkedin } from "react-icons/fa";
 import Tilt from "react-parallax-tilt";
 import profilePic from "../../assets/Saravans.jpeg";
+import LiveViewCount from "./LiveViewCount";
 import resumeFile from "../../assets/New_resume.pdf";
 
 const roles = ["Frontend Engineer", "MERN Stack Developer", "UI-Focused Problem Solver"];
@@ -272,7 +273,7 @@ export default function Hero() {
           <span className="chip">Based in Bangalore, India</span>
         </motion.div>
 
-        <motion.div variants={childVariants} className="grid gap-4 sm:grid-cols-3">
+        <motion.div variants={childVariants} className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {stats.map((stat, index) => (
             <motion.div
               key={stat.label}
@@ -286,6 +287,8 @@ export default function Hero() {
               <p className="mt-2 text-sm text-theme-muted">{stat.label}</p>
             </motion.div>
           ))}
+
+            <LiveViewCount />
         </motion.div>
       </motion.div>
 

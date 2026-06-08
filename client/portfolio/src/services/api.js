@@ -14,4 +14,7 @@ export const getProjects = () => api.get("/projects");
 export const getPinnedRepos = (username) =>
   api.get(`/github/pinned?user=${username}`);
 
+export const incrementViewCount = () => api.post("/views/increment");
+export const getViewCount = () => api.get("/views");
+
 export default api;
